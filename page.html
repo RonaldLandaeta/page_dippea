@@ -65,11 +65,12 @@ footer a{color:var(--red)}
 <section id="arma"><h2>Arma tu pedido</h2>
 <div class="builder">
 <h3>1. Tamaño</h3>
-<div class="opts" id="size"><button class="opt" data-v="6" aria-pressed="true">6 galletas · $5</button><button class="opt" data-v="10" aria-pressed="false">10 galletas · $7</button></div>
+<div class="opts" id="size"><button class="opt" data-v="6" aria-pressed="true">6 galletas · $5</button><button class="opt" data-v="10" aria-pressed="false">10 galletas · $7</button><button class="opt" data-v="custom" aria-pressed="false">Pedido personalizado</button></div>
 <h3>2. Dip a elección</h3>
 <div class="opts" id="dip"><button class="opt" aria-pressed="true">Augustus Gloop</button><button class="opt" aria-pressed="false">Casper Cream</button><button class="opt" aria-pressed="false">Steve Cream</button></div>
-<h3>3. Sabores <span class="note" id="left"></span></h3>
+<h3><span id="h3t">3. Sabores</span> <span class="note" id="left"></span></h3>
 <div id="flv"></div>
+<textarea id="cust" rows="4" aria-label="Detalle del pedido personalizado" placeholder="Cuéntanos qué necesitas: cantidades, sabores, dips, fecha de entrega..." style="display:none;width:100%;border:2px solid var(--brown);border-radius:16px;padding:.8rem;font:1rem Roboto;background:#fff;color:#4a2508"></textarea>
 <div class="sum"><div><div class="price" id="price">$5</div><div class="note" id="note"></div></div>
 <button class="btn" id="send">Pedir por WhatsApp</button></div>
 <div id="ok" role="status"></div>
@@ -81,12 +82,14 @@ footer a{color:var(--red)}
 
 <script>
 const F=["Dippea Chips","Dippea Velvet","Dippea Flips"],WA="584149030058";
-let size=6,dip="Augustus Gloop",cnt=[6,0,0];
+let custom=false,size=6,dip="Augustus Gloop",cnt=[6,0,0];
 const $=s=>document.querySelector(s);
 function pick(id,fn){document.querySelectorAll(id+" .opt").forEach(b=>b.onclick=()=>{document.querySelectorAll(id+" .opt").forEach(x=>x.setAttribute("aria-pressed",x===b));fn(b)})}
-pick("#size",b=>{size=+b.dataset.v;cnt=[size,0,0];draw()});
+pick("#size",b=>{custom=b.dataset.v==="custom";size=custom?0:+b.dataset.v;cnt=[size,0,0];draw()});
 pick("#dip",b=>{dip=b.textContent;draw()});
 function draw(){
+ $("#flv").style.display=custom?"none":"";$("#cust").style.display=custom?"block":"none";$("#h3t").textContent=custom?"3. Cuéntanos tu pedido":"3. Sabores";
+ if(custom){$("#left").textContent="";$("#price").textContent="A convenir";$("#note").textContent="Te respondemos con el precio según lo que pidas.";$("#send").disabled=!$("#cust").value.trim();return}
  const used=cnt.reduce((a,b)=>a+b,0),mixed=cnt.filter(c=>c>0).length>1;
  $("#flv").innerHTML=F.map((f,i)=>`<div class="row"><span>${f}</span><span class="q"><button aria-label="Quitar ${f}" data-i="${i}" data-d="-1">−</button><span>${cnt[i]}</span><button aria-label="Agregar ${f}" data-i="${i}" data-d="1">+</button></span></div>`).join("");
  $("#flv").querySelectorAll("button").forEach(b=>b.onclick=()=>{const i=+b.dataset.i,d=+b.dataset.d;
@@ -96,7 +99,9 @@ function draw(){
  $("#note").textContent=mixed?"Paquete surtido: tiene costo adicional (te confirmamos el monto).":"Paquete de un solo sabor.";
  $("#send").disabled=used<size;
 }
+$("#cust").oninput=draw;
 $("#send").onclick=()=>{
+ if(custom){$("#ok").textContent="Abriendo WhatsApp…";window.open(`https://wa.me/${WA}?text=${encodeURIComponent("Hola DIPPEA! Quiero hacer un pedido personalizado: "+$("#cust").value.trim())}`,"_blank");return}
  const l=F.map((f,i)=>cnt[i]?`${cnt[i]} ${f}`:"").filter(Boolean).join(", ");
  const t=`Hola DIPPEA! Quiero un pack de ${size} galletas (${l}) con dip ${dip}.`;
  $("#ok").textContent="Abriendo WhatsApp…";
