@@ -42,7 +42,7 @@ Página web de **DIPPEA**, tienda de galletas en presentación de papitas fritas
 
 Es un sitio **estático de un solo archivo**: no tiene dependencias, ni build, ni variables de entorno. Las imágenes van incrustadas en el HTML (base64), por eso pesa unos 250 KB. Las únicas cargas externas son las fuentes de Google Fonts (Fredoka y Roboto).
 
-## Publicar en Vercel
+<!-- ## Publicar en Vercel
 
 1. Sube el repositorio a GitHub.
 2. En [vercel.com](https://vercel.com), crea un proyecto nuevo e importa el repositorio.
@@ -104,4 +104,4 @@ Al agregar un producto nuevo, hay que añadir su tarjeta en el menú. Si es una 
 
 ## Nota sobre Vercel
 
-El plan Hobby de Vercel es solo para uso personal y no comercial. Cuando la página pase a ser el canal de venta del negocio, hay que pasar a un plan Pro.
+El plan Hobby de Vercel es solo para uso personal y no comercial. Cuando la página pase a ser el canal de venta del negocio, hay que pasar a un plan Pro. -->
