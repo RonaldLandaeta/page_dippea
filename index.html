@@ -112,7 +112,7 @@ footer small{display:block;margin-top:1.2rem}
 <div id="dip"></div></div></div>
 <div class="resumen" id="res" aria-live="polite"></div>
 <div class="sum"><div><div class="price" id="price">$5</div><div class="note" id="note"></div></div>
-<a class="btn" id="send" href="#" target="_blank" rel="noopener" aria-disabled="true">Pedir por WhatsApp</a></div>
+<a class="btn" id="send" href="#" aria-disabled="true">Pedir por WhatsApp</a></div>
 <div id="ok" role="status"></div>
 </div></section>
 <footer id="contacto"><div class="fw"><ul class="ct">
@@ -170,7 +170,7 @@ function draw(){
  }else{s.href="#";s.setAttribute("aria-disabled","true");$("#ok").textContent=miss}
 }
 $("#cust").oninput=draw;
-$("#send").addEventListener("click",e=>{if($("#send").getAttribute("aria-disabled")==="true")e.preventDefault()});
+$("#send").addEventListener("click",e=>{const s=$("#send");e.preventDefault();if(s.getAttribute("aria-disabled")==="true")return;const u=s.href;$("#ok").textContent="Abriendo WhatsApp…";setTimeout(()=>{if(document.visibilityState==="visible")$("#ok").innerHTML='¿No se abrió? <a href="'+u+'" target="_blank" rel="noopener">Toca aquí para abrir WhatsApp</a>'},2500);location.href=u});
 let tt;function toast(m){const e=$("#toast");e.textContent=m+"  ·  Ver pedido ↓";e.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>e.classList.remove("show"),2600)}
 $("#toast").onclick=()=>{$("#arma").scrollIntoView({behavior:"smooth"});$("#toast").classList.remove("show")};
 document.querySelectorAll(".card[data-t]").forEach(c=>{
